@@ -18,6 +18,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const channelsCollection = client.db("discord").collection("channels");
+    const messageCollection = client.db("discord").collection("messages");
 
     app.post("/channels", async (req, res) => {
       const channel = req.body;
@@ -25,11 +26,18 @@ async function run() {
       res.send(result);
     });
 
-    app.get('/channels', async(req,res)=>{
+    app.get("/channels", async (req, res) => {
       const query = {};
       const result = await channelsCollection.find(query).toArray();
-      res.send(result)
-    })
+      res.send(result);
+    });
+
+    //create a messages using this api
+    app.post("/message", async (req, res) => {
+      const message = req.body;
+      const result = await messageCollection.insertOne(message);
+      res.send(result);
+    });
   } finally {
     // await client.close();
   }
