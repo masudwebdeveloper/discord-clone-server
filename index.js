@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
@@ -36,6 +36,17 @@ async function run() {
     app.post("/message", async (req, res) => {
       const message = req.body;
       const result = await messageCollection.insertOne(message);
+      res.send(result);
+    });
+
+    app.get("/messages/:id", async (req, res) => {
+      // const { channelId, channelName } = req.query;
+      const id = req.params.id;
+      const query = { channelId: id };
+      const result = await messageCollection
+        .find(query)
+        .sort({ _id: -1 })
+        .toArray();
       res.send(result);
     });
   } finally {
