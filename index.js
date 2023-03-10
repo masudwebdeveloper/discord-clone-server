@@ -45,7 +45,7 @@ async function run() {
       const query = { channelId: id };
       const result = await messageCollection
         .find(query)
-        .sort({ _id: -1 })
+        .sort({ _id: 1 })
         .toArray();
       res.send(result);
     });
