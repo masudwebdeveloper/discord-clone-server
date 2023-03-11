@@ -49,6 +49,13 @@ async function run() {
         .toArray();
       res.send(result);
     });
+
+    app.delete("/message/:id", async (req, res) => {
+      const id = req.params;
+      const query = { _id: new ObjectId(id) };
+      const result = await messageCollection.deleteOne(query);
+      res.send(result);
+    });
   } finally {
     // await client.close();
   }
